@@ -1,5 +1,7 @@
 # alpine/bombardier
 
+[If enjoy, please consider buying me a coffee.](https://www.buymeacoffee.com/ozbillwang)
+
 Auto trigger with latest release and build a docker image with the [bombardier](https://github.com/codesenberg/bombardier) ready to run.
 
 ### Repo:
