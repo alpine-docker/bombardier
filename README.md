@@ -4,6 +4,11 @@
 
 Auto trigger with latest release and build a docker image with the [bombardier](https://github.com/codesenberg/bombardier) ready to run.
 
+### updates
+
+* Support for multiple architectures
+* Support for multi-stage builds
+
 ### Repo:
 
 https://github.com/alpine-docker/bombardier
