@@ -18,7 +18,6 @@ RUN apk --no-cache update && apk --no-cache upgrade && \
 FROM scratch
 # Copy our static executable
 COPY --from=builder /go/bin/bombardier /usr/bin/bombardier
-RUN chmod +x /usr/bin/bombardier
 
 ENTRYPOINT ["bombardier"]
 CMD ["--help"]
