@@ -10,7 +10,7 @@ https://github.com/alpine-docker/bombardier
 
 ### Daily build logs:
 
-https://travis-ci.org/alpine-docker/bombardier
+https://app.circleci.com/pipelines/github/alpine-docker/bombardier
 
 ### Docker iamge tags:
 
@@ -21,6 +21,7 @@ https://hub.docker.com/r/alpine/bombardier/tags/
 ```
 $ docker run --rm -it alpine/bombardier --help
 
+#  need wait for minutes to get output
 $ docker run -ti --rm alpine/bombardier -c 200 -d 10s -l http://www.google.com
 Bombarding http://www.google.com for 10s using 200 connections
 [============================================================================================================] 10s
@@ -42,7 +43,7 @@ Statistics        Avg      Stdev        Max
 ### The Processes to build this image
 
 The Processes to build this image
-* Enable Travis CI cronjob on this repo to run build daily on master branch
+* Enable CI cronjob on this repo to run build daily on master branch
 * Check if there are new tags/releases announced via Github REST API
 * Match the exist docker image tags via Hub.docker.io REST API
 * If not matched, build the image with latest version as tag and push to hub.docker.com
