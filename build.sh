@@ -1,43 +1,30 @@
 #!/usr/bin/env bash
 
 # Prerequisite
-# Make sure you set secret enviroment variables in Travis CI
+# Make sure you set secret enviroment variables in CI
 # DOCKER_USERNAME
 # DOCKER_PASSWORD
-# API_TOKEN
 
-set -ex
+set -e
 
+# usage
 Usage() {
-  echo "$0 [rebuild]"
+  echo "$0 <image_name>"
 }
 
-image="alpine/bombardier"
-repo="codesenberg/bombardier"
-
-latest=`curl -sL -H "Authorization: token ${API_TOKEN}"  https://api.github.com/repos/${repo}/tags |jq -r ".[].name"|head -1`
-sum=0
-echo "Lastest release is: ${latest}"
-
-tags=`curl -s https://hub.docker.com/v2/repositories/${image}/tags/ |jq -r .results[].name`
-
-for i in ${tags}
-do
-  if [ ${i} == ${latest} ];then
-    sum=$((sum+1))
-  fi
-done
-
-if [[ ( $sum -ne 1 ) || ( $1 == "rebuild" ) ]];then
-  docker build --no-cache --build-arg VERSION=$latest -t ${image}:${latest} .
-  status=`docker run --rm -it ${image}:${latest} --help | awk 'NR==1{print $2}' | awk '$1=$1'`
-  if [ "${status}" != "bombardier" ]; then exit 1; fi
-  docker tag ${image}:${latest} ${image}:latest
-
-  if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    docker push ${image}:${latest}
-    docker push ${image}:latest
-  fi
-
+if [ $# -eq 0 ]; then
+  Usage
+  exit 1
 fi
+
+image="alpine/$1"
+platform="${2:-linux/arm/v7,linux/arm64/v8,linux/arm/v6,linux/amd64,linux/ppc64le,linux/s390x}"
+
+curl -H "Cache-Control: no-cache" -sL "https://raw.githubusercontent.com/alpine-docker/multi-arch-libs/stable/functions.sh" -o functions.sh
+source functions.sh
+
+tag=$(get_latest_release codesenberg/bombardier)
+build_arg="VERSION=${tag}"
+
+echo "Building image for tag: ${tag}"
+build_docker_image "${tag}" "${image}" "${platform}" "${build_arg}"
