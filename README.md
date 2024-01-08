@@ -9,6 +9,9 @@ Auto trigger with latest release and build a docker image with the [bombardier](
 * Support for multiple architectures
 * Support for multi-stage builds
 
+![image](https://github.com/alpine-docker/bombardier/assets/8954908/269a548a-9426-460f-b610-bde71b5a577f)
+
+
 ### Repo:
 
 https://github.com/alpine-docker/bombardier
